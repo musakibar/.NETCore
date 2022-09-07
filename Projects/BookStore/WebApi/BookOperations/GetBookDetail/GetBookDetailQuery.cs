@@ -1,3 +1,4 @@
+using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using WebApi.Common;
@@ -9,9 +10,11 @@ namespace WebApi.BookOperations.GetBookDetail
     {
         public int BookId {get; set;}
         private readonly BookStoreDbContext _dbcontext;
-        public GetBookDetailQuery(BookStoreDbContext dbContext)
+        private readonly IMapper _mapper;
+        public GetBookDetailQuery(BookStoreDbContext dbContext, IMapper mapper)
         {
             _dbcontext = dbContext;
+            mapper = _mapper;
         }
 
         public BookDetailViewModel Handle()
@@ -19,11 +22,8 @@ namespace WebApi.BookOperations.GetBookDetail
             var book = _dbcontext.Books.Where(book=> book.Id == BookId).SingleOrDefault();
             if(book is null)
                 throw new InvalidOperationException("Kitap Bulunamadı");
-            BookDetailViewModel vm = new BookDetailViewModel();
-            vm.Title = book.Title;
-            vm.PageCount = book.PageCount;
-            vm.PublishDate = book.PublishDate.Date.ToString("dd/MM/yyyy");
-            vm.Genre = ((GenreEnum)book.GenreId).ToString();
+            BookDetailViewModel vm = _mapper.Map<BookDetailViewModel>(book);
+            
             return vm;
         }
 
