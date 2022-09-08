@@ -2,7 +2,7 @@
 
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace WebApi
+namespace WebApi.Entities
 {
     public class Book
     {

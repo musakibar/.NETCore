@@ -4,6 +4,8 @@ using Microsoft.Extensions.Hosting;
 using WebApi.DBOperations;
 using Microsoft.EntityFrameworkCore;
 using System.Reflection;
+using WebApi.Middlewares;
+using WebApi.Services;
 
 namespace WebApi
 {
@@ -18,6 +20,7 @@ namespace WebApi
 
             builder.Services.AddDbContext<BookStoreDbContext>(options=>options.UseInMemoryDatabase(databaseName:"BookStoreDB"));
             builder.Services.AddAutoMapper(Assembly.GetExecutingAssembly());
+            builder.Services.AddSingleton<ILoggerService,ConsoleLogger>();
 
             builder.Services.AddControllers();
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
@@ -42,6 +45,8 @@ namespace WebApi
             app.UseHttpsRedirection();
 
             app.UseAuthorization();
+
+            app.UseCustomExceptionMiddle();
 
             app.MapControllers();
 
