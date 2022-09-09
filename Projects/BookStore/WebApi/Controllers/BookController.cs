@@ -53,7 +53,7 @@ namespace WebApi.Controller
             command.Model = newBook;
             CreateBookCommandValidator validator = new CreateBookCommandValidator();
             validator.ValidateAndThrow(command);
-            command.Handle();                                   
+            command.Handle();
             return Ok();
         }
 

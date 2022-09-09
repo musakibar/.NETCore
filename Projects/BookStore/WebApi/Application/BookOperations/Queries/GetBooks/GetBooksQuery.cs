@@ -1,5 +1,6 @@
 using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using WebApi.Common;
 using WebApi.DBOperations;
@@ -19,20 +20,9 @@ namespace WebApi.Application.BookOperations.Queries.GetBooks
 
         public List<BooksViewModel> Handle()
         {
-            var bookList = _dbcontext.Books.OrderBy(x=> x.Id).ToList<Book>();
+            var bookList = _dbcontext.Books.Include(x=> x.Genre).Include(x=> x.Author).OrderBy(x=> x.Id);
 
-            List<BooksViewModel> vm = _mapper.Map<List<BooksViewModel>>(bookList);
-
-
-            // foreach(var book in bookList)
-            // {
-            //     vm.Add(new BooksViewModel(){
-            //         Title = book.Title,
-            //         Genre = ((GenreEnum)book.GenreId).ToString(),
-            //         PublishDate = book.PublishDate.Date.ToString("dd/MM/yyyy"),
-            //         PageCount = book.PageCount
-            //     });
-            // }
+            List<BooksViewModel> vm = _mapper.Map<List<BooksViewModel>>(bookList);            
             return vm;
 
         }
@@ -44,6 +34,7 @@ namespace WebApi.Application.BookOperations.Queries.GetBooks
         public int PageCount { get; set; }
         public string PublishDate { get; set; }
         public string Genre { get; set; }
+        public string Author { get; set; }
 
     }
 

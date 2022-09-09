@@ -22,8 +22,7 @@ namespace WebApi.Application.BookOperations.Queries.GetBookDetail
             var book = _dbcontext.Books.Where(book=> book.Id == BookId).SingleOrDefault();
             if(book is null)
                 throw new InvalidOperationException("Kitap Bulunamadı");
-            BookDetailViewModel vm = _mapper.Map<BookDetailViewModel>(book);
-            
+            BookDetailViewModel vm = _mapper.Map<BookDetailViewModel>(book);            
             return vm;
         }
 
@@ -36,6 +35,7 @@ namespace WebApi.Application.BookOperations.Queries.GetBookDetail
         public int PageCount { get; set; }
         public string PublishDate { get; set; }
         public string Genre { get; set; }
+        public string Author { get; set; }
 
     }
 
